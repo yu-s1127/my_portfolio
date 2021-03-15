@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import dj_database_url
 import environ
 import os
 from pathlib import Path
@@ -78,26 +77,12 @@ WSGI_APPLICATION = 'my_portfolio.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'ddlht98ps4nord',
-            'USER': 'wktmiiwfgoviko',
-            'PASSWORD': '0a5810587e57d4f5b60496e147a721a85dfdd7bfe8ab37cb7165d3f4a9a00b90',
-            'HOST': 'ec2-54-167-168-52.compute-1.amazonaws.com',
-            'PORT': '5432',
-        }}
-
-    db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-    DATABASES['default'].update(db_from_env)
+}
 
 
 # Password validation
@@ -137,7 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -149,13 +136,3 @@ EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS')
-
-if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    import django_heroku
-    django_heroku.settings(locals())  # 追加
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
