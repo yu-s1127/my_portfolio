@@ -5,3 +5,4 @@ __pycache__
 .DS_Store
 staticfiles
 .env
+my_portfolio/local_settings.py
