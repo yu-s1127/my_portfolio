@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import django_heroku
 import environ
 import os
 from pathlib import Path
@@ -24,8 +23,12 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-DEBUG = False
-SECRET_KEY = env('SECRET_KEY')
+DEBUG = True
+
+if DEBUG:
+    SECRET_KEY = env('SECRET_KEY')
+else:
+    SECRET_KEY = os.environ['SECRET_KEY']
 
 ALLOWED_HOSTS = ["*"]
 
@@ -78,13 +81,17 @@ WSGI_APPLICATION = 'my_portfolio.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
+try:
+    from .local_settings import *
+except ImportError:
+    pass
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -132,10 +139,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+if DEBUG:
+    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_PORT = env('EMAIL_PORT')
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+else:
+    EMAIL_HOST = os.environ('EMAIL_HOST')
+    EMAIL_PORT = os.environ('EMAIL_PORT')
+    EMAIL_HOST_USER = os.environ('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = os.environ('EMAIL_USE_TLS')
 
-django_heroku.settings(locals())
+if not DEBUG:
+    import django_heroku
+    django_heroku.settings(locals())
