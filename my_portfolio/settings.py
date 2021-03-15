@@ -10,10 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from django.http import (
-    HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound,
-    HttpResponseServerError,)
-from django.views.decorators.csrf import requires_csrf_token
 import environ
 import os
 from pathlib import Path
@@ -34,7 +30,7 @@ DEBUG = env.bool('DEBUG', False)
 
 SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['yuhei-portfolio.herokuapp.com']
 
 
 # Application definition
@@ -151,11 +147,3 @@ EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 if not DEBUG:
     import django_heroku
     django_heroku.settings(locals())
-
-
-@requires_csrf_token
-def my_customized_server_error(request, template_name='500.html'):
-    import sys
-    from django.views import debug
-    error_html = debug.technical_500_response(request, *sys.exc_info()).content
-    return HttpResponseServerError(error_html)
