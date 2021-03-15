@@ -1,5 +1,7 @@
-__pycache__
+*.pyc
+*.swp
 db.sqlite3
+__pycache__
 .DS_Store
-local_settings.py
+staticfiles
 .env
