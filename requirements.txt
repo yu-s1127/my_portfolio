@@ -55,4 +55,4 @@ urllib3==1.26.3
 whitenoise==5.2.0
 wrapt==1.12.1
 zope.interface==5.2.0
-psycopg2==2.7.6.1
+psycopg2==2.8.2
