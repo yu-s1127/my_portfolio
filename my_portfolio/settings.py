@@ -179,6 +179,6 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 
-if not DEBUG:
-    import django_heroku
-    django_heroku.settings(locals())
+# if not DEBUG:
+#     import django_heroku
+#     django_heroku.settings(locals())
