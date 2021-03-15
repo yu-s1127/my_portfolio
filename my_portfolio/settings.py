@@ -26,10 +26,10 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 
 DEBUG = False
 
-if DEBUG:
-    SECRET_KEY = env('SECRET_KEY')
-else:
-    SECRET_KEY = os.environ['SECRET_KEY']
+# if DEBUG:
+SECRET_KEY = env('SECRET_KEY')
+# else:
+#     SECRET_KEY = os.environ['SECRET_KEY']
 
 ALLOWED_HOSTS = ["*"]
 
@@ -139,18 +139,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-if DEBUG:
-    EMAIL_HOST = env('EMAIL_HOST')
-    EMAIL_PORT = env('EMAIL_PORT')
-    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-    EMAIL_USE_TLS = env('EMAIL_USE_TLS')
-else:
-    EMAIL_HOST = os.environ('EMAIL_HOST')
-    EMAIL_PORT = os.environ('EMAIL_PORT')
-    EMAIL_HOST_USER = os.environ('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ('EMAIL_HOST_PASSWORD')
-    EMAIL_USE_TLS = os.environ('EMAIL_USE_TLS')
+# if DEBUG:
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+# else:
+#     EMAIL_HOST = os.environ('EMAIL_HOST')
+#     EMAIL_PORT = os.environ('EMAIL_PORT')
+#     EMAIL_HOST_USER = os.environ('EMAIL_HOST_USER')
+#     EMAIL_HOST_PASSWORD = os.environ('EMAIL_HOST_PASSWORD')
+#     EMAIL_USE_TLS = os.environ('EMAIL_USE_TLS')
 
 if not DEBUG:
     import django_heroku
