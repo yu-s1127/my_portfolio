@@ -1,0 +1,14 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="card top d-flex flex-column-justify-content-end mb-4">
+  <img src="{% static 'img/top_image.jpg' %}" alt="">
+  <div class="overlay p-5">
+    <h1 class="title">{{ title_data.title }}</h1>
+    <h5 class="subtitle">{{ titel_data.subtitle }}</h5>
+  </div>
+</div>
+
+{% endblock %}
