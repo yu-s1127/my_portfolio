@@ -24,10 +24,14 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG')
+DEBUG = False
 
-ALLOWED_HOSTS = ["yuhei-portfolio.herokuapp.com"]
+if DEBUG:
+    SECRET_KEY = env('SECRET_KEY')
+else:
+    SECRET_KEY = os.environ('SECRET_KEY')
+
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -51,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'my_portfolio.urls'
@@ -76,14 +81,25 @@ WSGI_APPLICATION = 'my_portfolio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'name',
+        'USER': 'user',
+        'PASSWORD': '',
+        'HOST': 'host',
+        'PORT': '',
     }
 }
 
-db_from_env = dj_database_url.config()
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
 
 
@@ -132,17 +148,26 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 
-try:
-    from config.local_settings import *
-except ImportError:
-    pass
+if DEBUG:
+    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_PORT = env('EMAIL_PORT')
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+else:
+    EMAIL_HOST = os.environ('EMAIL_HOST')
+    EMAIL_PORT = os.environ('EMAIL_PORT')
+    EMAIL_HOST_USER = os.environ('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = os.environ('EMAIL_USE_TLS')
 
 if not DEBUG:
-    import django_heroku
-    django_heroku.settings(locals())
+    SECRET_KEY = os.environ['SECRET_KEY']
+    import django_herok
+    django_heroku.settings(locals())  # 追加
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
