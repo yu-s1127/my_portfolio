@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import dj_database_url
 import environ
 import os
 from pathlib import Path
@@ -130,7 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
+STATIC_ROOT = (
     os.path.join(BASE_DIR, 'static'),
 )
 
