@@ -250,6 +250,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'my_portfolio.wsgi.application'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('NAME'),
+        'USER': env('USER'),
+        'PASSWORD': env('PASSWORD'),
+        'HOST': env('HOST'),
+        'PORT': env('PORT')
+    }
+}
+
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_env)
+
 if not DEBUG:
     import dj_database_url
     db_from_env = dj_database_url.config()
