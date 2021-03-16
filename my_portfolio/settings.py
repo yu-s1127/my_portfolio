@@ -202,6 +202,7 @@ SECRET_KEY = env('SECRET_KEY')
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'yuhei-portfolio.herokuapp.com',
+    'yuhei-portfolio-site.herokuapp.com',
     '.herokuapp.com']
 
 
@@ -248,6 +249,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'my_portfolio.wsgi.application'
+
+if not DEBUG:
+    import dj_database_url
+    db_from_env = dj_database_url.config()
+    DATABASES = {
+        'default': dj_database_url.config()
+    }
 
 try:
     from .local_settings import *
