@@ -175,7 +175,8 @@
 #     import django_heroku
 #     django_heroku.settings(locals())
 #     SECURE_SSL_REDIRECT = True
-#     STATICFILES_STORSGE = 'whitenoise.storage.CompressedManifest.FilesStorage'
+# STATICFILES_STORSGE =
+# 'whitenoise.storage.CompressedManifest.FilesStorage'
 
 
 import os
@@ -225,7 +226,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ROOT_URLCONF = 'my_portfolio.urls'
+ROOT_URLCONF = 'my_portfolio.urls'
 
 TEMPLATES = [
     {
@@ -243,30 +244,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'blog.wsgi.application'
+WSGI_APPLICATION = 'my_portfolio.wsgi.application'
 
-if not CLOUD:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'yourdomaindb',
-            'USER': 'postgres',
-            'PASSWORD': '',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
-    }
-else:
-    SECURE_SSL_REDIRECT = True
-    django_heroku.settings(locals())
-    DATABASES = {
-        'default': dj_database_url.config(
-            default='ec2-54-167-168-52.compute-1.amazonaws.com/ddlht98ps4nord'
-        )
-    }
-    db_from_env = dj_database_url.config()
-    DATABASES['default'].update(db_from_env)
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
