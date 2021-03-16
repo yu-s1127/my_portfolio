@@ -196,14 +196,12 @@ CLOUD = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'hsdkhfdjfruvdjncgljsieskjva45asefsaf8vjxnsjdbvjad'
+SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = [
-    'yourdomain.herokuapp.com',
-    'www.yourdomain.com',
-    'django_sendgrid',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ['127.0.0.1', 'yuhei-portfolio.herokuapp.com']
+
+
+# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -212,7 +210,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
+    'widget_tweaks',
+    'app.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
@@ -226,7 +225,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'blog.urls'
+# ROOT_URLCONF = 'my_portfolio.urls'
 
 TEMPLATES = [
     {
